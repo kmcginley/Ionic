@@ -201,7 +201,20 @@
       onSubmit(e) {
         e.preventDefault();
         console.log(this.input);
-        this.$emit("get-codes", this.input);
+        if (this.input.barcode.length == this.input.location.length) {
+          this.$emit("get-codes", this.input);
+          this.input = { barcode: [], location: [] };
+        } else {
+          this.showAlert();
+        }
+      },
+      showAlert() {
+        return this.$ionic.alertController
+          .create({
+            message: "Inconsistent number of entries",
+            buttons: ["OK"]
+          })
+          .then(a => a.present());
       }
     }
   };
